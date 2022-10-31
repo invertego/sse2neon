@@ -5941,7 +5941,7 @@ result_t test_mm_sqrt_pd(const SSE2NEONTestImpl &impl, uint32_t iter)
     __m128d a = load_m128d(_a);
     __m128d c = _mm_sqrt_pd(a);
 
-    return validateDouble(c, f0, f1);
+    return validateFloatError(c, f0, f1, 1.0e-15);
 }
 
 result_t test_mm_sqrt_sd(const SSE2NEONTestImpl &impl, uint32_t iter)
@@ -5956,7 +5956,7 @@ result_t test_mm_sqrt_sd(const SSE2NEONTestImpl &impl, uint32_t iter)
     __m128d b = load_m128d(_b);
     __m128d c = _mm_sqrt_sd(a, b);
 
-    return validateDouble(c, f0, f1);
+    return validateFloatError(c, f0, f1, 1.0e-15);
 }
 
 result_t test_mm_sra_epi16(const SSE2NEONTestImpl &impl, uint32_t iter)
@@ -7153,7 +7153,7 @@ result_t test_mm_alignr_epi8(const SSE2NEONTestImpl &impl, uint32_t iter)
         memcpy((void *) d, (const void *) _b, 16);
         memcpy((void *) (d + 16), (const void *) _a, 16);
         // shifting
-        for (uint x = 0; x < sizeof(d); x++) {
+        for (unsigned int x = 0; x < sizeof(d); x++) {
             if (x + shift >= sizeof(d))
                 d[x] = 0;
             else
@@ -7203,7 +7203,7 @@ result_t test_mm_alignr_pi8(const SSE2NEONTestImpl &impl, uint32_t iter)
         memcpy((void *) d, (const void *) _b, 8);
         memcpy((void *) (d + 8), (const void *) _a, 8);
         // shifting
-        for (uint x = 0; x < sizeof(d); x++) {
+        for (unsigned int x = 0; x < sizeof(d); x++) {
             if (x + shift >= sizeof(d))
                 d[x] = 0;
             else
@@ -8283,7 +8283,7 @@ result_t test_mm_extract_epi64(const SSE2NEONTestImpl &impl, uint32_t iter)
     int64_t *_a = (int64_t *) impl.mTestIntPointer1;
 
     __m128i a = load_m128i(_a);
-    __int64_t c;
+    __int64 c;
 
     switch (iter & 0x1) {
     case 0:

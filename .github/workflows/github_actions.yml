@@ -19,6 +19,27 @@ jobs:
           make check
           sh .ci/cross-check.sh
 
+  host_x86_win:
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        include:
+          - { cxx_compiler: g++,     sys: ucrt64 }
+          - { cxx_compiler: clang++, sys: clang64 }
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{matrix.sys}}
+          install: make
+          pacboy: cc:p
+      - name: checkout code
+        uses: actions/checkout@v3.0.2
+      - name: build artifact
+        shell: msys2 {0}
+        env:
+          CXX: ${{ matrix.cxx_compiler }}
+        run: make check
+
   host_arm:
     runs-on: ubuntu-20.04
     strategy:
