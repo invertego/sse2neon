@@ -2288,10 +2288,10 @@ result_t test_mm_move_ss(const SSE2NEONTestImpl &impl, uint32_t iter)
     __m128 b = load_m128(_b);
 
     float result[4];
-    result[0] = b[0];
-    result[1] = a[1];
-    result[2] = a[2];
-    result[3] = a[3];
+    result[0] = _b[0];
+    result[1] = _a[1];
+    result[2] = _a[2];
+    result[3] = _a[3];
 
     __m128 ret = _mm_move_ss(a, b);
     return validateFloat(ret, result[0], result[1], result[2], result[3]);
@@ -3055,12 +3055,19 @@ result_t test_mm_ucomineq_ss(const SSE2NEONTestImpl &impl, uint32_t iter)
     return test_mm_comineq_ss(impl, iter);
 }
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4700)
+#endif
 result_t test_mm_undefined_ps(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
     __m128 a = _mm_undefined_ps();
     a = _mm_xor_ps(a, a);
     return validateFloat(a, 0, 0, 0, 0);
 }
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 result_t test_mm_unpackhi_ps(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
@@ -5516,7 +5523,7 @@ result_t test_mm_set_epi64(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
     const int64_t *_a = (const int64_t *) impl.mTestIntPointer1;
 
-    __m128i ret = _mm_set_epi64((__m64) _a[1], (__m64) _a[0]);
+    __m128i ret = _mm_set_epi64(load_m64(&_a[1]), load_m64(&_a[0]));
 
     return validateInt64(ret, _a[0], _a[1]);
 }
@@ -5605,7 +5612,7 @@ result_t test_mm_set1_epi64(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
     const int64_t *_a = (const int64_t *) impl.mTestIntPointer1;
 
-    __m128i ret = _mm_set1_epi64((__m64) _a[0]);
+    __m128i ret = _mm_set1_epi64(load_m64(&_a[0]));
 
     return validateInt64(ret, _a[0], _a[0]);
 }
@@ -5656,9 +5663,9 @@ result_t test_mm_setr_epi32(const SSE2NEONTestImpl &impl, uint32_t iter)
 
 result_t test_mm_setr_epi64(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
-    const __m64 *_a = (const __m64 *) impl.mTestIntPointer1;
-    __m128i c = _mm_setr_epi64(_a[0], _a[1]);
-    return validateInt64(c, (int64_t) _a[0], (int64_t) _a[1]);
+    const int64_t *_a = (const int64_t *) impl.mTestIntPointer1;
+    __m128i c = _mm_setr_epi64(load_m64(&_a[0]), load_m64(&_a[1]));
+    return validateInt64(c, _a[0], _a[1]);
 }
 
 result_t test_mm_setr_epi8(const SSE2NEONTestImpl &impl, uint32_t iter)
@@ -6257,7 +6264,7 @@ result_t test_mm_storel_epi64(const SSE2NEONTestImpl &impl, uint32_t iter)
     __m128i a = load_m128i(p);
     _mm_storel_epi64(&mem, a);
 
-    ASSERT_RETURN(mem[0] == p[0]);
+    ASSERT_RETURN(((SIMDVec *) &mem)->m128_u64[0] == p[0]);
     return TEST_SUCCESS;
 }
 
@@ -6659,6 +6666,10 @@ result_t test_mm_ucomineq_sd(const SSE2NEONTestImpl &impl, uint32_t iter)
     return test_mm_comineq_sd(impl, iter);
 }
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4700)
+#endif
 result_t test_mm_undefined_pd(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
     __m128d a = _mm_undefined_pd();
@@ -6672,6 +6683,9 @@ result_t test_mm_undefined_si128(const SSE2NEONTestImpl &impl, uint32_t iter)
     a = _mm_xor_si128(a, a);
     return validateInt64(a, 0, 0);
 }
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 result_t test_mm_unpackhi_epi16(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
@@ -7153,7 +7167,7 @@ result_t test_mm_alignr_epi8(const SSE2NEONTestImpl &impl, uint32_t iter)
         memcpy((void *) d, (const void *) _b, 16);
         memcpy((void *) (d + 16), (const void *) _a, 16);
         // shifting
-        for (uint x = 0; x < sizeof(d); x++) {
+        for (unsigned int x = 0; x < sizeof(d); x++) {
             if (x + shift >= sizeof(d))
                 d[x] = 0;
             else
@@ -7203,7 +7217,7 @@ result_t test_mm_alignr_pi8(const SSE2NEONTestImpl &impl, uint32_t iter)
         memcpy((void *) d, (const void *) _b, 8);
         memcpy((void *) (d + 8), (const void *) _a, 8);
         // shifting
-        for (uint x = 0; x < sizeof(d); x++) {
+        for (unsigned int x = 0; x < sizeof(d); x++) {
             if (x + shift >= sizeof(d))
                 d[x] = 0;
             else
@@ -8283,7 +8297,7 @@ result_t test_mm_extract_epi64(const SSE2NEONTestImpl &impl, uint32_t iter)
     int64_t *_a = (int64_t *) impl.mTestIntPointer1;
 
     __m128i a = load_m128i(_a);
-    __int64_t c;
+    int64_t c;
 
     switch (iter & 0x1) {
     case 0:
@@ -9414,8 +9428,12 @@ static test_mm_cmpestri_sword_data_t
 
 result_t test_mm_cmpestri(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
+#if defined(_MSC_VER)
+    return TEST_UNIMPL;
+#else
     GENERATE_MM_CMPESTRI_TEST_CASES
     return TEST_SUCCESS;
+#endif
 }
 
 typedef struct {
@@ -9642,8 +9660,12 @@ static test_mm_cmpestrm_sword_data_t
 
 result_t test_mm_cmpestrm(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
+#if defined(_MSC_VER)
+    return TEST_UNIMPL;
+#else
     GENERATE_MM_CMPESTRM_TEST_CASES
     return TEST_SUCCESS;
+#endif
 }
 
 #undef IS_CMPESTRI
@@ -9840,17 +9862,27 @@ result_t test_mm_get_denormals_zero_mode(const SSE2NEONTestImpl &impl,
                                                              : TEST_FAIL;
 }
 
+static int popcnt_reference(uint64_t a)
+{
+    int count = 0;
+    while (a != 0) {
+        count += a & 1;
+        a >>= 1;
+    }
+    return count;
+}
+
 result_t test_mm_popcnt_u32(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
     const uint64_t *a = (const uint64_t *) impl.mTestIntPointer1;
-    ASSERT_RETURN(__builtin_popcount(a[0]) == _mm_popcnt_u32(a[0]));
+    ASSERT_RETURN(popcnt_reference((uint32_t) a[0]) == _mm_popcnt_u32(a[0]));
     return TEST_SUCCESS;
 }
 
 result_t test_mm_popcnt_u64(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
     const uint64_t *a = (const uint64_t *) impl.mTestIntPointer1;
-    ASSERT_RETURN(__builtin_popcountll(a[0]) == _mm_popcnt_u64(a[0]));
+    ASSERT_RETURN(popcnt_reference(a[0]) == _mm_popcnt_u64(a[0]));
     return TEST_SUCCESS;
 }
 
@@ -9888,8 +9920,15 @@ result_t test_mm_set_denormals_zero_mode(const SSE2NEONTestImpl &impl,
 result_t test_rdtsc(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
     uint64_t start = _rdtsc();
-    for (int i = 0; i < 100000; i++)
+    for (int i = 0; i < 100000; i++) {
+#if defined(_MSC_VER)
+        __nop();
+        __noop();
+        _ReadWriteBarrier();
+#else
         __asm__ __volatile__("" ::: "memory");
+#endif
+    }
     uint64_t end = _rdtsc();
     return end > start ? TEST_SUCCESS : TEST_FAIL;
 }

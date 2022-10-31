@@ -42,6 +42,18 @@ jobs:
             apt-get install -q -y "${{ matrix.cxx_compiler }}" make
           run: make check
 
+  host_win:
+    runs-on: windows-2022
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3.0.2
+
+      - name: add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: build artifact
+        run: msbuild sse2neon.vcxproj -t:rebuild -property:Configuration=Release -property:Platform=ARM64
+
   coding_style:
     runs-on: ubuntu-20.04
     steps:
