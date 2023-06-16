@@ -7,20 +7,20 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sse2neon", "sse2neon.vcxpro
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|ARM = Debug|ARM
 		Debug|ARM64 = Debug|ARM64
-		Release|ARM = Release|ARM
+		Debug-ClangCL|ARM64 = Debug-ClangCL|ARM64
 		Release|ARM64 = Release|ARM64
+		Release-ClangCL|ARM64 = Release-ClangCL|ARM64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{341BF194-865B-4DA6-8120-93173498E774}.Debug|ARM.ActiveCfg = Debug|ARM
-		{341BF194-865B-4DA6-8120-93173498E774}.Debug|ARM.Build.0 = Debug|ARM
 		{341BF194-865B-4DA6-8120-93173498E774}.Debug|ARM64.ActiveCfg = Debug|ARM64
 		{341BF194-865B-4DA6-8120-93173498E774}.Debug|ARM64.Build.0 = Debug|ARM64
-		{341BF194-865B-4DA6-8120-93173498E774}.Release|ARM.ActiveCfg = Release|ARM
-		{341BF194-865B-4DA6-8120-93173498E774}.Release|ARM.Build.0 = Release|ARM
+		{341BF194-865B-4DA6-8120-93173498E774}.Debug-ClangCL|ARM64.ActiveCfg = Debug-ClangCL|ARM64
+		{341BF194-865B-4DA6-8120-93173498E774}.Debug-ClangCL|ARM64.Build.0 = Debug-ClangCL|ARM64
 		{341BF194-865B-4DA6-8120-93173498E774}.Release|ARM64.ActiveCfg = Release|ARM64
 		{341BF194-865B-4DA6-8120-93173498E774}.Release|ARM64.Build.0 = Release|ARM64
+		{341BF194-865B-4DA6-8120-93173498E774}.Release-ClangCL|ARM64.ActiveCfg = Release-ClangCL|ARM64
+		{341BF194-865B-4DA6-8120-93173498E774}.Release-ClangCL|ARM64.Build.0 = Release-ClangCL|ARM64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

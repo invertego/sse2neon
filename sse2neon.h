@@ -1761,7 +1761,7 @@ FORCE_INLINE void _mm_free(void *addr)
 FORCE_INLINE uint64_t _sse2neon_get_fpcr()
 {
     uint64_t value;
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && !defined(__clang__)
     value = _ReadStatusReg(ARM64_FPCR);
 #else
     __asm__ __volatile__("mrs %0, FPCR" : "=r"(value)); /* read */
@@ -1771,7 +1771,7 @@ FORCE_INLINE uint64_t _sse2neon_get_fpcr()
 
 FORCE_INLINE void _sse2neon_set_fpcr(uint64_t value)
 {
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && !defined(__clang__)
     _WriteStatusReg(ARM64_FPCR, value);
 #else
     __asm__ __volatile__("msr FPCR, %0" ::"r"(value));  /* write */
@@ -2240,7 +2240,7 @@ FORCE_INLINE __m128 _mm_or_ps(__m128 a, __m128 b)
 FORCE_INLINE void _mm_prefetch(char const *p, int i)
 {
     (void) i;
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && !defined(__clang__)
     switch (i) {
     case _MM_HINT_NTA:
         __prefetch2(p, 1);
@@ -9176,7 +9176,7 @@ FORCE_INLINE uint64_t _rdtsc(void)
      * bits wide and it is attributed with the flag 'cap_user_time_short'
      * is true.
      */
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && !defined(__clang__)
     val = _ReadStatusReg(ARM64_SYSREG(3, 3, 14, 0, 2));
 #else
     __asm__ __volatile__("mrs %0, cntvct_el0" : "=r"(val));

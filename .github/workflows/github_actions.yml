@@ -86,7 +86,9 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
 
       - name: build artifact
-        run: msbuild sse2neon.vcxproj -t:rebuild -property:Configuration=Release -property:Platform=ARM64
+        run: |
+          msbuild sse2neon.vcxproj -t:rebuild -property:Configuration=Release -property:Platform=ARM64
+          msbuild sse2neon.vcxproj -t:rebuild -property:Configuration=Release-ClangCL -property:Platform=ARM64
 
       - name: upload artifact
         uses: actions/upload-artifact@master
@@ -105,7 +107,7 @@ jobs:
           name: msvc-arm64-artifact
 
       - name: Run tests
-        run: wine-arm64 cmd.exe /c 'Release\sse2neon.exe'
+        run: wine-arm64 cmd.exe /c 'Release\sse2neon.exe && Release-ClangCL\sse2neon.exe'
 
 
   coding_style:

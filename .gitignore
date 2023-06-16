@@ -7,4 +7,6 @@ gcc-arm-*
 .vs/
 Debug/
 Release/
+Debug-ClangCL/
+Release-ClangCL/
 *.vcxproj.user
