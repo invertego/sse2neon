@@ -11799,7 +11799,7 @@ result_t test_rdtsc(const SSE2NEONTestImpl &impl, uint32_t iter)
     uint64_t start = _rdtsc();
     for (int i = 0; i < 100000; i++) {
 #if defined(_MSC_VER)
-        _ReadWriteBarrier();
+        __nop();
 #else
         __asm__ __volatile__("" ::: "memory");
 #endif
