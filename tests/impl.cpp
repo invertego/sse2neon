@@ -3067,7 +3067,7 @@ result_t test_mm_storeu_si16(const SSE2NEONTestImpl &impl, uint32_t iter)
     int16_t *_b = (int16_t *) &b;
     int16_t *_c = (int16_t *) &a;
     return validateInt16(b, _c[0], _b[1], _b[2], _b[3], _b[4], _b[5], _b[6],
-        _b[7]);
+                         _b[7]);
 #endif
 }
 
