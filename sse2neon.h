@@ -129,7 +129,7 @@
 #include <windows.h>
 #endif
 
-#if !defined(__cplusplus)
+#if !defined(__cplusplus) && !defined(__clang__)
 #error sse2neon only supports C++ compilation with this compiler
 #endif
 
@@ -1101,7 +1101,7 @@ FORCE_INLINE __m128i _mm_shuffle_epi_3332(__m128i a)
                     vgetq_lane_f32(vreinterpretq_f32_m128(a), (imm) & (0x3))), \
                 1),                                                            \
             2),                                                                \
-        3))
+        3))          
 
 // Shuffle 16-bit integers in the low 64 bits of a using the control in imm8.
 // Store the results in the low 64 bits of dst, with the high 64 bits being
