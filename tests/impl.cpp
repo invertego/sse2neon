@@ -3060,13 +3060,14 @@ result_t test_mm_storeu_si16(const SSE2NEONTestImpl &impl, uint32_t iter)
     return TEST_UNIMPL;
 #else
     const int32_t *_a = (const int32_t *) impl.mTestIntPointer1;
-    __m128i b;
+    const int32_t zero[4] = {};
+    __m128i b = load_m128i(zero);
     __m128i a = load_m128i(_a);
     _mm_storeu_si16(&b, a);
     int16_t *_b = (int16_t *) &b;
     int16_t *_c = (int16_t *) &a;
     return validateInt16(b, _c[0], _b[1], _b[2], _b[3], _b[4], _b[5], _b[6],
-                         _b[7]);
+        _b[7]);
 #endif
 }
 
@@ -3079,7 +3080,8 @@ result_t test_mm_storeu_si64(const SSE2NEONTestImpl &impl, uint32_t iter)
     return TEST_UNIMPL;
 #else
     const int32_t *_a = (const int32_t *) impl.mTestIntPointer1;
-    __m128i b;
+    const int32_t zero[4] = {};
+    __m128i b = load_m128i(zero);
     __m128i a = load_m128i(_a);
     _mm_storeu_si64(&b, a);
     int64_t *_b = (int64_t *) &b;
@@ -6483,7 +6485,8 @@ result_t test_mm_storeu_si32(const SSE2NEONTestImpl &impl, uint32_t iter)
     return TEST_UNIMPL;
 #else
     const int32_t *_a = (const int32_t *) impl.mTestIntPointer1;
-    __m128i b;
+    const int32_t zero[4] = {};
+    __m128i b = load_m128i(zero);
     __m128i a = load_m128i(_a);
     _mm_storeu_si32(&b, a);
     int32_t *_b = (int32_t *) &b;
