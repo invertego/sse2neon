@@ -2823,6 +2823,12 @@ result_t test_mm_shuffle_pi16(const SSE2NEONTestImpl &impl, uint32_t iter)
 // common shuffle permutations
 result_t test_mm_shuffle_ps(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
+    // FIXME
+    // https://developercommunity.visualstudio.com/t/Certain-NEON-intrinsics-returning-incorr/10390423
+#if defined(_MSC_VER) && !defined(__clang__)
+    return TEST_UNIMPL;
+#endif
+
     const float *_a = impl.mTestFloatPointer1;
     const float *_b = impl.mTestFloatPointer2;
     result_t isValid = TEST_SUCCESS;
@@ -5825,6 +5831,12 @@ result_t test_mm_setzero_si128(const SSE2NEONTestImpl &impl, uint32_t iter)
 
 result_t test_mm_shuffle_epi32(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
+    // FIXME
+    // https://developercommunity.visualstudio.com/t/Certain-NEON-intrinsics-returning-incorr/10390423
+#if defined(_MSC_VER) && !defined(__clang__)
+    return TEST_UNIMPL;
+#endif
+
     const int32_t *_a = impl.mTestIntPointer1;
     __m128i a, c;
 
@@ -5866,6 +5878,12 @@ result_t test_mm_shuffle_pd(const SSE2NEONTestImpl &impl, uint32_t iter)
 
 result_t test_mm_shufflehi_epi16(const SSE2NEONTestImpl &impl, uint32_t iter)
 {
+    // FIXME
+    // https://developercommunity.visualstudio.com/t/Certain-NEON-intrinsics-returning-incorr/10390423
+#if defined(_MSC_VER) && !defined(__clang__)
+    return TEST_UNIMPL;
+#endif
+
     const int16_t *_a = (const int16_t *) impl.mTestIntPointer1;
     __m128i a, c;
 
